@@ -31,13 +31,22 @@ describe :convert do
 end
 
 def convert(input)
-  Hash.new { |hash, key| hash[key] = {} }.tap do |hash|
+  Hash.new.tap do |hash|
     input.split("&").each do |key_value_string|
       key, value = key_value_string.split("=")
       value.gsub!("*", " ")
 
-      if (md = key.match(/(?<subhash>.*)\[(?<subhash_key>.*)\]/))
-        hash[md[:subhash].to_sym][md[:subhash_key].to_sym] = value
+      if (md = key.match(/(?<collection_name>.*)\[(?<collection_key>.*)\]/))
+
+        if md[:collection_key].empty?
+          new_value = hash.fetch(md[:collection_name].to_sym, []) << value
+        else
+          new_value = hash.fetch(md[:collection_name].to_sym, {})
+          new_value[md[:collection_key].to_sym] = value
+        end
+
+        hash[md[:collection_name].to_sym] = new_value
+
       else
         hash[key.to_sym] = value
       end
