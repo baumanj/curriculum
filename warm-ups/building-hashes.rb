@@ -1,10 +1,16 @@
 require "rspec"
 
-describe :breakfast do
-  input = "first_name=Ada&last_name=Lovelace&dob=1815&title=Countess"
-  output = {first_name: "Ada", last_name: "Lovelace", dob: "1815", title: "Countess"}
-  it "convert returns #{output} for #{input}" do
-    expect(convert(input)).to eq(output)
+describe :convert do
+  it "passes breakfast" do
+    input = "first_name=Ada&last_name=Lovelace&dob=1815&title=Countess"
+    output = {first_name: "Ada", last_name: "Lovelace", dob: "1815", title: "Countess"}
+    expect(send(subject, input)).to eq(output)
+  end
+
+  it "passes lunch" do
+    input = "name=Ada*Lovelace&father=Lord*Byron&mother=Anne*Isabella*Milbanke"
+    output = {name: "Ada Lovelace", father: "Lord Byron", mother: "Anne Isabella Milbanke"}
+    expect(send(subject, input)).to eq(output)
   end
 end
 
