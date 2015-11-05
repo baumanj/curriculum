@@ -3,8 +3,8 @@ require "faker"
 
 Vote = Struct.new(:question) do
 
-  def cast(in_favor_of)
-    self.results[in_favor_of] += 1
+  def cast(option)
+    results[option] += 1
   end
 
   def results
@@ -12,9 +12,12 @@ Vote = Struct.new(:question) do
   end
 
   def vote_count
+    results.values.reduce(&:+)
   end
 
   def winner
+    option, num_votes = results.max_by {|option, num_votes| num_votes }
+    option
   end
 
 end
