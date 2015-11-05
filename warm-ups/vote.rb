@@ -3,6 +3,10 @@ require "faker"
 
 Vote = Struct.new(:question) do
 
+  def self.votes_to_s(num_votes)
+    "#{num_votes} #{num_votes == 1 ? 'vote' : 'votes'}"
+  end
+
   def cast(option)
     results[option] += 1
   end
@@ -16,11 +20,16 @@ Vote = Struct.new(:question) do
   end
 
   def winner
-    option, num_votes = results.max_by {|option, num_votes| num_votes }
-    option
+    results.max_by(&:last).first
   end
 
   def stats
+    puts "#{self.class.votes_to_s(vote_count)} total"
+    results.sort_by(&:first).each do |option, num_votes_for|
+      puts "#{option} (#{self.class.votes_to_s(num_votes_for)})"
+    end
+    puts
+    puts "#{winner} is currently in the lead"
   end
 
 end
@@ -55,9 +64,9 @@ describe Vote do
   context "Gold" do
     it "prints the current status when #stats is called" do
       stats_output = <<END
-3 Votes total
-Ada (1 vote)
-Hillary (2 votes)
+3 votes total
+Ada (2 votes)
+Hillary (1 vote)
 
 Ada is currently in the lead
 END
