@@ -1,16 +1,14 @@
 require "rspec"
 require "faker"
 
-class Vote
-  attr_accessor :question
-
-  def initialize(question)
-  end
+Vote = Struct.new(:question) do
 
   def cast(in_favor_of)
+    self.results[in_favor_of] += 1
   end
 
   def results
+    @results ||= Hash.new { |hash, key| hash[key] = 0 }
   end
 end
 
