@@ -20,6 +20,9 @@ Vote = Struct.new(:question) do
     option
   end
 
+  def stats
+  end
+
 end
 
 describe Vote do
@@ -47,6 +50,19 @@ describe Vote do
       expect(presidential_vote.vote_count).to eq(3)
     end
 
+  end
+
+  context "Gold" do
+    it "prints the current status when #stats is called" do
+      stats_output = <<END
+3 Votes total
+Ada (1 vote)
+Hillary (2 votes)
+
+Ada is currently in the lead
+END
+      expect { presidential_vote.stats }.to output(stats_output).to_stdout
+    end
   end
 
 end
