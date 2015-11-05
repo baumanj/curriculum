@@ -17,7 +17,7 @@ end
 def convert(input)
   key_value_pairs = input.split("&").map do |key_value_string|
     key, value = key_value_string.split("=")
-    [key.to_sym, value]
+    [key.to_sym, value.gsub("*", " ")]
   end
   Hash[key_value_pairs]
 end
