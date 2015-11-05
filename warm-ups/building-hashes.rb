@@ -21,6 +21,13 @@ describe :convert do
     expect(send(subject, input)).to eq(output)
   end
 
+  it "passes dessert" do
+    input = "person[first_name]=Ada&person[last_name]=Lovelace&skills[]=programming&skills[]=math"
+    output = {person: {first_name: "Ada", last_name: "Lovelace"},
+              skills: ["programming", "math"]}
+    expect(send(subject, input)).to eq(output)
+  end
+
 end
 
 def convert(input)
